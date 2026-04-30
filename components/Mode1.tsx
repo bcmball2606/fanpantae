@@ -193,9 +193,9 @@ export default function Mode1({ attemptId, set, progress, totalScore, onProgress
           </div>
         )}
 
-        {/* Choices grid 6 + skip — โชว์เฉพาะตอนเล่นข้อนี้ */}
+        {/* Choices grid 4 (2x2) + skip — โຊว์เฉพาะตอนเล่นข้อนี้ */}
         {phase !== "ready" && (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-2xl mx-auto w-full">
             {sub.choices.map((c, i) => {
               const cls =
                 phase === "result"

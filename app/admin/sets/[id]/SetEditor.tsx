@@ -189,7 +189,7 @@ function Mode1Editor({
         id,
         prompt_text: "",
         prompt_image_url: null,
-        choices: ["", "", "", "", "", ""],
+        choices: ["", "", "", ""],
         correct_index: 0,
       },
     ]);
@@ -201,7 +201,7 @@ function Mode1Editor({
         id: Math.random().toString(36).slice(2, 10),
         prompt_text: "",
         prompt_image_url: null,
-        choices: ["", "", "", "", "", ""],
+        choices: ["", "", "", ""],
         correct_index: 0,
       });
     }
@@ -231,28 +231,26 @@ function Mode1Editor({
       "choice2",
       "choice3",
       "choice4",
-      "choice5",
-      "choice6",
-      "correct(1-6)",
+      "correct(1-4)",
     ];
     const example = [
       [
         "ภาพนี้คือประเทศอะไร",
         "https://example.com/image.jpg",
-        "ไทย", "ลาว", "เวียดนาม", "กัมพูชา", "พม่า", "มาเลเซีย",
+        "ไทย", "ลาว", "เวียดนาม", "กัมพูชา",
         "1",
       ],
       [
         "เมืองนี้อยู่ทวีปอะไร",
         "",
-        "เอเชีย", "ยุโรป", "แอฟริกา", "อเมริกาเหนือ", "อเมริกาใต้", "ออสเตรเลีย",
+        "เอเชีย", "ยุโรป", "แอฟริกา", "อเมริกาเหนือ",
         "2",
       ],
     ];
     const rows = [header, ...example];
     // Add 23 empty rows to fill up to 25
     for (let i = 0; i < 23; i++) {
-      rows.push(["", "", "", "", "", "", "", "", ""]);
+      rows.push(["", "", "", "", "", "", ""]);
     }
     const csv = buildCSV(rows);
     // Prepend BOM so Excel auto-detects UTF-8 (Thai will display correctly)
@@ -289,9 +287,9 @@ function Mode1Editor({
         // Skip fully empty rows
         if (r.every((c) => !c.trim())) return;
         const cols = [...r];
-        while (cols.length < 9) cols.push("");
-        const [prompt, image, c1, c2, c3, c4, c5, c6, correctRaw] = cols;
-        const choices = [c1, c2, c3, c4, c5, c6].map((c) => c.trim());
+        while (cols.length < 7) cols.push("");
+        const [prompt, image, c1, c2, c3, c4, correctRaw] = cols;
+        const choices = [c1, c2, c3, c4].map((c) => c.trim());
         const correct = parseInt(correctRaw, 10);
         if (!prompt.trim() && !image.trim()) {
           errors.push(`แถวที่ ${idx + (hasHeader ? 2 : 1)}: ไม่มี prompt_text หรือ prompt_image_url`);
@@ -301,8 +299,8 @@ function Mode1Editor({
           errors.push(`แถวที่ ${idx + (hasHeader ? 2 : 1)}: ต้องมีช่อยส์อย่างน้อย 2 ข้อ`);
           return;
         }
-        if (!Number.isInteger(correct) || correct < 1 || correct > 6) {
-          errors.push(`แถวที่ ${idx + (hasHeader ? 2 : 1)}: คอลัมน์ correct ต้องเป็นเลข 1–6 (ได้ "${correctRaw}")`);
+        if (!Number.isInteger(correct) || correct < 1 || correct > 4) {
+          errors.push(`แถวที่ ${idx + (hasHeader ? 2 : 1)}: คอลัมน์ correct ต้องเป็นเลข 1–4 (ได้ "${correctRaw}")`);
           return;
         }
         if (!choices[correct - 1]) {
@@ -387,7 +385,7 @@ function Mode1Editor({
                 onChange={(url) => updateSub(i, { prompt_image_url: url || null })}
               />
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
+            <div className="grid md:grid-cols-2 gap-2 mt-2">
               {q.choices.map((c, ci) => (
                 <label key={ci} className={`flex items-center gap-2 rounded p-2 ${q.correct_index === ci ? "bg-green-900/30 border border-green-400/40" : "bg-black/20 border border-white/10"}`}>
                   <input

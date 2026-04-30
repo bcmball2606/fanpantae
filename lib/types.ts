@@ -4,9 +4,9 @@ export type Mode1SubQuestion = {
   id: string;
   prompt_text: string;
   prompt_image_url?: string | null;
-  // 6 choices in admin-defined order
+  // 4 choices in admin-defined order
   choices: string[];
-  correct_index: number; // 0..5
+  correct_index: number; // 0..3
 };
 
 export type QuestionSet = {

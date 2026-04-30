@@ -89,7 +89,7 @@ export default function Mode4({ attemptId, set, progress, totalScore, onFinish }
 
         <div className="grid grid-cols-1 gap-3">
           {(set.mode4_properties || []).map((p, i) => {
-            const isOpen = opened.includes(i);
+            const isOpen = opened.includes(i) || phase === "result";
             return (
               <button
                 key={i}

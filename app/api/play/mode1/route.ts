@@ -32,7 +32,11 @@ export async function POST(req: Request) {
 
   let outcome: "correct" | "wrong" | "skip" = "skip";
   if (action === "answer") {
-    if (typeof choiceIndex !== "number" || choiceIndex < 0 || choiceIndex > 5) {
+    if (
+      typeof choiceIndex !== "number" ||
+      choiceIndex < 0 ||
+      choiceIndex >= (sub.choices?.length || 0)
+    ) {
       return NextResponse.json({ error: "ช่อยส์ไม่ถูกต้อง" }, { status: 400 });
     }
     outcome = choiceIndex === sub.correct_index ? "correct" : "wrong";

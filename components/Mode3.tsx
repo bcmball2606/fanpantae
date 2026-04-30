@@ -115,22 +115,24 @@ export default function Mode3({ attemptId, set, progress, totalScore, onProgress
                 className="absolute inset-0 w-full h-full object-cover rounded-md"
               />
             )}
-            {/* Tile overlay grid */}
-            <div className="absolute inset-0 grid grid-cols-5 grid-rows-5">
-              {Array.from({ length: 25 }).map((_, i) => {
-                const isOpen = opened.includes(i);
-                return (
-                  <button
-                    key={i}
-                    onClick={() => openTile(i)}
-                    disabled={isOpen || phase !== "playing" || busy}
-                    className={`jigsaw-tile ${isOpen ? "opened" : ""}`}
-                  >
-                    {!isOpen && <span>{i + 1}</span>}
-                  </button>
-                );
-              })}
-            </div>
+            {/* Tile overlay grid (hidden on result to reveal full image) */}
+            {phase !== "result" && (
+              <div className="absolute inset-0 grid grid-cols-5 grid-rows-5">
+                {Array.from({ length: 25 }).map((_, i) => {
+                  const isOpen = opened.includes(i);
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => openTile(i)}
+                      disabled={isOpen || phase !== "playing" || busy}
+                      className={`jigsaw-tile ${isOpen ? "opened" : ""}`}
+                    >
+                      {!isOpen && <span>{i + 1}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
