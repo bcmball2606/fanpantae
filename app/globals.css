@@ -1,0 +1,400 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #04081f;
+  --bg-mid: #0a1545;
+  --bg-light: #1a2c7a;
+  --accent-orange: #ff8a1c;
+  --accent-red: #d92027;
+  --accent-green: #c8ff3a;        /* LED lemon-lime */
+  --accent-yellow: #ffd54a;
+  --accent-gold: #f0c14b;
+  --panel: #0a1340;
+  --panel-2: #142270;
+  --velvet: #0d1850;
+}
+
+@theme inline {
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-mid: var(--bg-mid);
+  --color-bg-light: var(--bg-light);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-red: var(--accent-red);
+  --color-accent-green: var(--accent-green);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --font-thai: var(--font-noto-thai);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-noto-thai), "Sarabun", "Tahoma", sans-serif;
+  color: #fff;
+  background:
+    /* main velvet stage */
+    radial-gradient(ellipse 90% 60% at 50% -10%, #2a3fb0 0%, #1a2c7a 25%, #0a1545 55%, #04081f 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Studio backdrop — spotlight + LED truss + radial light rays */
+.studio-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    /* center spotlight cone from top */
+    radial-gradient(ellipse 50% 70% at 50% 0%, rgba(255, 230, 150, 0.18) 0%, transparent 60%),
+    /* side spotlights */
+    radial-gradient(ellipse 30% 50% at 0% 20%, rgba(80, 120, 255, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 50% at 100% 20%, rgba(80, 120, 255, 0.15) 0%, transparent 70%),
+    /* floor glow */
+    radial-gradient(ellipse 80% 30% at 50% 100%, rgba(40, 70, 200, 0.4) 0%, transparent 70%),
+    /* light rays */
+    repeating-conic-gradient(
+      from 0deg at 50% -20%,
+      rgba(255, 255, 255, 0.02) 0deg 4deg,
+      transparent 4deg 12deg
+    );
+}
+
+/* Bottom stage floor reflection */
+.studio-bg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 35vh;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(20, 34, 112, 0.4) 0px,
+      rgba(20, 34, 112, 0.4) 60px,
+      rgba(10, 20, 70, 0.4) 60px,
+      rgba(10, 20, 70, 0.4) 61px
+    );
+  transform: perspective(400px) rotateX(40deg);
+  transform-origin: bottom;
+  opacity: 0.5;
+}
+
+/* Top truss with LED lights */
+.studio-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background:
+    linear-gradient(180deg, #1a1a1a 0%, #000 100%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 28px,
+      rgba(255, 200, 80, 0.6) 28px,
+      rgba(255, 200, 80, 0.6) 30px
+    );
+  background-blend-mode: screen;
+  box-shadow: 0 4px 24px rgba(255, 200, 80, 0.15);
+}
+
+/* Question bar — black with gold piping like the show's lower-third */
+.question-bar {
+  background:
+    linear-gradient(180deg, #0a0a0a 0%, #2a2a2a 50%, #0a0a0a 100%);
+  border: 2px solid var(--accent-gold);
+  border-radius: 9999px;
+  box-shadow:
+    0 0 0 1px #000,
+    0 0 0 4px rgba(240, 193, 75, 0.25),
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+/* Score sum box — bevelled metal frame, red header, off-white body */
+.score-box {
+  background: linear-gradient(180deg, #fdf6e3 0%, #e8dcb8 100%);
+  color: #1a1a1a;
+  border: 2px solid #000;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 2px var(--accent-gold),
+    0 6px 0 rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-family: var(--font-noto-thai), serif;
+}
+.score-box-header {
+  background: linear-gradient(180deg, #e53935 0%, #a01818 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid #000;
+}
+
+/* LED points badge — black panel, lemon-lime 7-seg style digits */
+.points-badge {
+  background: linear-gradient(180deg, #0c0c0c 0%, #000 100%);
+  border: 2px solid #000;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 2px var(--accent-gold),
+    inset 0 0 12px rgba(200, 255, 58, 0.15),
+    inset 0 0 0 1px rgba(200, 255, 58, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.6);
+}
+.points-digit {
+  font-family: "Orbitron", "Courier New", monospace;
+  color: var(--accent-green);
+  text-shadow:
+    0 0 6px rgba(200, 255, 58, 0.9),
+    0 0 14px rgba(200, 255, 58, 0.5),
+    0 0 24px rgba(123, 216, 32, 0.3);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+/* Choice button — chrome blue capsule */
+.choice-btn {
+  background:
+    linear-gradient(180deg, #2a4ab8 0%, #1a2c7a 50%, #0d1850 100%);
+  border: 2px solid #000;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.15s;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(240, 193, 75, 0.3),
+    0 4px 0 rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.choice-btn:hover:not(:disabled) {
+  background:
+    linear-gradient(180deg, #3a5dd0 0%, #2a3fb0 50%, #1a2c7a 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+    0 0 0 2px var(--accent-gold),
+    0 0 18px rgba(240, 193, 75, 0.5),
+    0 4px 0 rgba(0, 0, 0, 0.6);
+}
+.choice-btn.correct {
+  background: linear-gradient(180deg, #c8ff3a 0%, #6fb010 100%);
+  color: #0a1340;
+  text-shadow: none;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 2px #fff,
+    0 0 24px rgba(200, 255, 58, 0.7),
+    0 4px 0 rgba(0, 0, 0, 0.6);
+}
+.choice-btn.wrong {
+  background: linear-gradient(180deg, #e53935 0%, #8b1a1a 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    0 0 0 2px #fff,
+    0 0 24px rgba(229, 57, 53, 0.7),
+    0 4px 0 rgba(0, 0, 0, 0.6);
+}
+.choice-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Skip button — gold pill */
+.skip-btn {
+  background: linear-gradient(180deg, #ffe07a 0%, #d4a017 100%);
+  border: 2px solid #000;
+  color: #1a1a1a;
+  font-weight: 800;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    0 4px 0 rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Game show panel — velvet with gold piping */
+.panel {
+  background:
+    linear-gradient(180deg, rgba(20, 34, 112, 0.85) 0%, rgba(10, 20, 70, 0.9) 100%);
+  border: 1px solid rgba(240, 193, 75, 0.3);
+  border-radius: 0.75rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 12px 36px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Logo blob — show's iconic green orb with gold rim */
+.logo-blob {
+  background:
+    radial-gradient(circle at 30% 25%, #e8ff8a 0%, #c8ff3a 30%, #6fb010 70%, #2a6a08 100%);
+  border-radius: 9999px;
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 0 4px var(--accent-gold),
+    0 0 0 5px #000,
+    0 0 18px rgba(200, 255, 58, 0.7),
+    inset 0 4px 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Lights */
+.light-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, #b7ff5a, #2a6a08);
+  box-shadow: 0 0 8px #7bd820, inset 0 0 4px rgba(0, 0, 0, 0.4);
+}
+.light-dot.off {
+  background: radial-gradient(circle at 30% 30%, #404040, #1a1a1a);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Jigsaw tile — ใช้ inset shadow แทน border เพื่อไม่กิน layout */
+.jigsaw-tile {
+  background: linear-gradient(180deg, #1a3070 0%, #0a1430 100%);
+  border: 0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px #000;
+}
+.jigsaw-tile:hover:not(.opened):not(:disabled) {
+  background: linear-gradient(180deg, #2a3fb0 0%, #142270 100%);
+  box-shadow: inset 0 0 0 2px var(--accent-gold), inset 0 0 18px rgba(240, 193, 75, 0.3);
+}
+.jigsaw-tile.opened {
+  background: transparent;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Property card — gold-trimmed velvet bar */
+.prop-card {
+  background: linear-gradient(180deg, #0a1340 0%, #04081f 100%);
+  border: 2px solid rgba(240, 193, 75, 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.2s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.prop-card.opened {
+  background: linear-gradient(180deg, #2a3fb0 0%, #142270 100%);
+  border-color: var(--accent-gold);
+  box-shadow:
+    0 0 0 1px var(--accent-gold),
+    0 0 24px rgba(240, 193, 75, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Generic primary button — orange capsule with gold edge */
+.btn-primary {
+  background: linear-gradient(180deg, #ffb347 0%, #ff8a1c 50%, #c84a00 100%);
+  color: #fff;
+  font-weight: 800;
+  border: 2px solid #000;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+    0 0 0 2px var(--accent-gold),
+    0 5px 0 rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.1s;
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+    0 0 0 2px #fff,
+    0 0 18px rgba(255, 138, 28, 0.5),
+    0 6px 0 rgba(0, 0, 0, 0.5);
+}
+.btn-primary:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 2px var(--accent-gold),
+    0 2px 0 rgba(0, 0, 0, 0.5);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.15s;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+input[type="text"], input[type="password"], input[type="number"], textarea {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  outline: none;
+}
+input:focus, textarea:focus {
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 3px rgba(255, 122, 24, 0.2);
+}
+
+/* Big stage title — yellow-gold with deep shadow */
+.title-glow {
+  background: linear-gradient(180deg, #fff5d6 0%, #ffe07a 40%, #d4a017 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 224, 122, 0.6))
+    drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+}
+
+/* Pulse animation for timer */
+@keyframes pulse-warn {
+  0%, 100% { color: #ff7a18; }
+  50% { color: #ff3030; transform: scale(1.05); }
+}
+.timer-warn {
+  animation: pulse-warn 0.4s infinite;
+}
+
+/* Shake animation for wrong answer */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.shake { animation: shake 0.4s; }
