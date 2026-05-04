@@ -72,7 +72,15 @@ export default function Mode1({ attemptId, set, progress, totalScore, onProgress
   }
 
   useEffect(() => {
+    // Preload all sub-question images so they are cached before the timer starts
+    subs.forEach((s) => {
+      if (s.prompt_image_url) {
+        const img = new window.Image();
+        img.src = s.prompt_image_url;
+      }
+    });
     return () => { clearTick(); clearGrace(); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function submit(action: "answer" | "skip" | "timeout", choiceIndex?: number) {
